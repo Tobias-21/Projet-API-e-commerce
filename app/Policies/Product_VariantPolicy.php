@@ -33,7 +33,7 @@ class Product_VariantPolicy
      */
     public function create(User $user,Product $product): Response
     {
-        return $product !== null && $user->isAdmin() ?
+        return $product !== null && $product->user_id === $user->id ?
             Response::allow() :
             Response::deny('Permission denied');
     }

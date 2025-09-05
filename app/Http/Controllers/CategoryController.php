@@ -11,6 +11,8 @@ class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * 
+     *  @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {

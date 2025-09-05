@@ -35,6 +35,6 @@ class DatabaseSeeder extends Seeder
             });
         });
        
-        User::factory(10)->state(['role' => 'client'])->create();
+        User::factory(10)->state(['role' => 'customer'])->create();
     }
 }

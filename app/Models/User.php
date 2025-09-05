@@ -62,8 +62,11 @@ class User extends Authenticatable
         return $this->role === 'vendor';
     }
 
-    public function Cart(){
+    public function cart(){
         return $this->hasOne(Cart::class);
     }
     
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 }

@@ -19,4 +19,12 @@ class Product_Variant extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function order_items(){
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function cart_items(){
+        return $this->hasMany(Cart_Item::class,'product__variant_id');
+    }
 }

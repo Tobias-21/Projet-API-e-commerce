@@ -30,7 +30,7 @@ class CartController extends Controller
         Gate::authorize('create',Cart::class);
 
         $request->validate([
-            'product_variants_id' => 'required|exists:product__variants,id',
+            'product__variant_id' => 'required|exists:product__variants,id',
             'quantity' => 'required|integer|min:1'
         ]);
 
@@ -38,9 +38,9 @@ class CartController extends Controller
             ['user_id' => auth()->id()]
         );
 
-        $variant = Product_Variant::find($request->product_variants_id);
+        $variant = Product_Variant::find($request->product__variant_id);
 
-        $cart_item = $cart->cart_items()->where('product_variants_id', $variant->id)->first();
+        $cart_item = $cart->cart_items()->where('product__variant_id', $variant->id)->first();
 
         if($cart_item){
             $item_quantity = $cart_item->quantity + $request->quantity;
@@ -74,7 +74,7 @@ class CartController extends Controller
             $price = $variant->price * $request->quantity;
 
             $cart->cart_items()->create([
-                'product_variants_id' => $variant->id,
+                'product__variant_id' => $variant->id,
                 'quantity' => $request->quantity,
                 'price' => $price
             ]);
@@ -106,7 +106,7 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
 
-        $variant = Product_Variant::find($item->product_variants_id);
+        $variant = Product_Variant::find($item->product__variant_id);
 
         if($request->quantity > $variant->stock){
             return response()->json([
