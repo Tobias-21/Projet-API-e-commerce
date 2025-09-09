@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'api_pal' => [
+        'base_url' => env('API_PAL_BASE_URL'),
+        'user_id' => env('API_PAL_USER_ID'),
+        'public_key' => env('API_PAL_PUBLIC_KEY'),
+        'secret_key' => env('API_PAL_SECRET_KEY'),
+    ],
+
 ];

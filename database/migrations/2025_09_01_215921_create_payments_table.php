@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('provider')->default('PAL');
             $table->enum('method',['credit_cart','mobile_money','bank_tansfert']);
             $table->decimal('amount');
-            $table->enum('status',['pending','success','failed','canceled']);
+            $table->enum('status',['pending','success','failed','canceled'])->default('pending');
             $table->string('transaction_ref')->unique();
+            $table->string('provider_ref')->nullable()->unique();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

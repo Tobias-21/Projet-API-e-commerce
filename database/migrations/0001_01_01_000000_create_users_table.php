@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->enum('role', ['admin', 'customer', 'vendor'])->default('customer');
-            $table->enum('status', ['en_attente', 'validé', 'rejetté'])->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

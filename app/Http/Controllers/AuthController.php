@@ -46,6 +46,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => \bcrypt($request->password),
             'phone' => $request->phone,
+            'role' => $request->role
         ]);
 
         return \response()->json([

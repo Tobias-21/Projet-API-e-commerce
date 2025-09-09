@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->string('carrier');
             $table->string('tracking_number');
-            $table->enum('status',['in_transit','delivered']);
+            $table->enum('status',['pending','in_transit','delivered'])->default('pending');
             $table->timestamps();
         });
     }
