@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function index(){
+        
+        return response()->json([
+            'users' => User::paginate(10)
+        ]);
+    }
+
+
     public function login(LoginRequest $request){ 
 
         $request->validated($request->all());
@@ -22,7 +30,7 @@ class AuthController extends Controller
 
             return \response()->json([
                 'error' => true,
-                'message' => 'Ces informations ne coresspondent à aucun de nos enregistrement'
+                'message' => 'This information does not match any of our records.'
             ],401);
         }
 
@@ -30,7 +38,7 @@ class AuthController extends Controller
 
         return \response()->json([
             'success' => true,
-            'message' => 'Vous êtes connecté avec succès',
+            'message' => 'You\'re login successfully',
             'user' => $user,
             'token' => $user->createToken('API token of '. $user->name)->plainTextToken
         ]);
@@ -51,7 +59,7 @@ class AuthController extends Controller
 
         return \response()->json([
             'success' => true,
-            'message' => 'Votre compte a été créé avec succès',
+            'message' => 'Account created successfully',
             'user' => $user,
             'token' => $user->createToken('API token of '. $user->name)->plainTextToken
         ]);
@@ -68,6 +76,7 @@ class AuthController extends Controller
     }
 
     public function resetPassword(Request $request){
+
         $request->validate([
             'token' => 'required',
             'email' => 'required|email|exists:users,email',
@@ -99,7 +108,32 @@ class AuthController extends Controller
 
         return \response()->json([
             "success" => true,
-            "message" => "Vous êtes déconnecté avec succès"
+            "message" => "You're logout successfully"
+        ]);
+    }
+
+    public function manage(Request $request){
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'status' => 'required|in:actif,suspend'
+        ]);
+
+        $user = User::find($request->user_id);
+
+        if(!$user){
+           return response()->json([
+                'message' => 'User not found'
+            ]);
+        }
+
+        $user->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json([
+            'message' => 'User\'s status updated successfully',
+            'user' => $user
         ]);
     }
 

@@ -29,13 +29,12 @@ class ShippingController extends Controller
         $request->validate([
             'order_id' => 'required|exists:orders,id',
             'carrier' => 'required|string',
-            'tracking_number' => 'requered|string',
-            'status' => 'required|in:pending,in_transit,delivered'
+            'tracking_number' => 'required|string',
         ]);
 
         $order = Order::where('id',$request->order_id)->first();
 
-        $shippings = Shipping::create([
+        $shipping = Shipping::create([
             'order_id' => $order->id,
             'carrier' => $request->carrier,
             'tracking_number' => $request->tracking_number,
@@ -61,7 +60,7 @@ class ShippingController extends Controller
      */
     public function update(Request $request, Shipping $shipping)
     {
-        Gate::authorize('edit', $shipping);
+        Gate::authorize('update', $shipping);
 
         $request->validate([
             'status' => 'required|in:pending,in_transit,delivered'

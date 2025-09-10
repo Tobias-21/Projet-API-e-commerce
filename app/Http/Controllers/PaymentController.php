@@ -6,6 +6,9 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -24,8 +27,15 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $order = Order::where('id', $request->order_id)->firstOrFail();
        
+        $order = Order::where('id', $request->order_id)->firstOrFail();
+        
+        if(Auth::id() !== $order->user_id){
+            return response()->json([
+                'message' => 'Unauthorized'
+            ]);
+        }
+
         $request->validate([
             'order_id' => 'required|exists:orders,id',
             'method' => 'required|in:credit_cart,mobile_money,bank_tansfert',
@@ -58,7 +68,7 @@ class PaymentController extends Controller
             "callback_url" => route('payment.callback')
         ]);
 
-        $body = $response->json();
+         $body = $response->json();
        
 
         if ($response->failed() || !isset($body['data'])) {
@@ -67,8 +77,6 @@ class PaymentController extends Controller
                 'details' => $response->json()
             ], 500);
         }
-
-
         //reponse PAL
 
         $payment->update([
@@ -82,15 +90,32 @@ class PaymentController extends Controller
         ], 201);
     }
     
-    public function status(Request $request) {
-        
+    public function status($order_id) {
+
+        $order = Order::find($order_id);
+
+        if(!$order){
+            return response()->json([
+                'message' => 'Commande not found'
+            ]);
+        }
+
+        $user = User::find($order->user_id);
+
+        if(Auth::id() !== $user->id && (!$user->isAdmin() || !$user->isVendor())){
+            return response()->json([
+                'message' => 'Unauthorized'
+            ]);
+        }
+
+        return response()->json([
+            'status_payment' => $order->payment_status
+        ]);
     }
 
     public function callback(Request $request) {
      
-        \Log::info('PAL CALLBACK RAW', $request->all());
-
-
+       // \Log::info('PAL CALLBACK RAW', $request->all());
         $data = $request->all();
 
         if (!isset($data['reference'])) {
