@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->string('provider')->default('PAL');
             $table->enum('method',['credit_cart','mobile_money','bank_tansfert']);
-            $table->decimal('amount');
+            $table->decimal('amount',10,2);
             $table->enum('status',['pending','success','failed','canceled'])->default('pending');
             $table->string('transaction_ref')->unique();
             $table->string('provider_ref')->nullable()->unique();

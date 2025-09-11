@@ -8,6 +8,11 @@ class Order extends Model
 {
     protected $fillable = ['user_id','total','status','payment_status','shipping_address'];
 
+    protected $casts = [
+        'total' => 'decimal:2',
+    ];
+
+
     public function user(){
         return $this->belongsTo(User::class);
     }

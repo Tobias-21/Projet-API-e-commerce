@@ -62,14 +62,14 @@ class PaymentController extends Controller
             'Content-Type'  => 'application/json',
         ])->post(config('services.api_pal.base_url') . '/checkout/requesttopup', [
             'user_id' => config('services.api_pal.user_id'),
-            'amount' => $payment->amount,
+            'amount' => (float) $payment->amount,
             'currency' => "XOF",
             'email' => $payment->order->user->email,
+            'phone' => "+2290146346595",
             "callback_url" => route('payment.callback')
         ]);
 
-         $body = $response->json();
-       
+        $body = $response->json();
 
         if ($response->failed() || !isset($body['data'])) {
             return response()->json([

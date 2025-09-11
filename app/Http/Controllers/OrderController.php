@@ -51,6 +51,7 @@ class OrderController extends Controller
         $order = Order::create([
             'user_id' => Auth::id(),
             'total' => $total,
+            'payment_status' => 'unpaid',
             'shipping_address' => $request->shipping_address
         ]);
 

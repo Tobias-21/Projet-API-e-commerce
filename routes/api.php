@@ -32,7 +32,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::middleware('IsAdmin')->group(function(){
         Route::post('/users/status',[\App\Http\Controllers\AuthController::class,'manage']);
         Route::get('/users',[\App\Http\Controllers\AuthController::class,'index']);
-        Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'dashbord']);
+        Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'dashboard']);
+        Route::get('/export/rapport',[\App\Http\Controllers\AdminController::class,'rapport']);
     });
     
 });
