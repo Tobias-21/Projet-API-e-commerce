@@ -31,9 +31,10 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::middleware('IsAdmin')->group(function(){
         Route::post('/users/status',[\App\Http\Controllers\AuthController::class,'manage']);
+        Route::post('/users/role',[\App\Http\Controllers\AuthController::class,'role']);
         Route::get('/users',[\App\Http\Controllers\AuthController::class,'index']);
-        Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'dashboard']);
-        Route::get('/export/rapport',[\App\Http\Controllers\AdminController::class,'rapport']);
+        Route::get('/admin/dashboard',[\App\Http\Controllers\AdminController::class,'dashboard']);
+        Route::get('/admin/reports',[\App\Http\Controllers\AdminController::class,'rapport']);
     });
     
 });

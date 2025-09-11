@@ -137,4 +137,28 @@ class AuthController extends Controller
         ]);
     }
 
+    public function role(Request $request){
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role' => 'required|in:admin'
+        ]);
+
+        $user = User::find($request->user_id);
+
+        if(!$user){
+           return response()->json([
+                'message' => 'User not found'
+            ]);
+        }
+
+        $user->update([
+            'role' => $request->role
+        ]);
+
+        return response()->json([
+            'message' => 'User\'s role updated successfully',
+            'user' => $user
+        ]);
+    }
 }
