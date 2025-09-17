@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/users/role',[\App\Http\Controllers\AuthController::class,'role']);
         Route::get('/users',[\App\Http\Controllers\AuthController::class,'index']);
         Route::get('/admin/dashboard',[\App\Http\Controllers\AdminController::class,'dashboard']);
-        Route::get('/admin/reports',[\App\Http\Controllers\AdminController::class,'rapport']);
+        Route::get('/admin/reports/{type}',[\App\Http\Controllers\AdminController::class,'rapport']);
     });
     
 });

@@ -86,6 +86,8 @@
                     <th>Prix Unitaire</th>
                     <th>Total</th>
                     <th>Status</th>
+                   
+
                 </tr>
             </thead>
             <tbody>
@@ -98,7 +100,7 @@
                             <td>{{ $item->quantity }}</td>
                             <td>{{ number_format($item->unity_price, 2, ',', ' ') }} XOF</td>
 
-                             @if ($itemIndex === 0)
+                            @if ($itemIndex === 0)
                                 <td rowspan="{{ $order->order_items->count() }}">
                                     {{ number_format($order->total, 2, ',', ' ') }} XOF
                                 </td>
@@ -106,6 +108,7 @@
                                     {{ ucfirst($order->payment_status) }}
                                 </td>
                             @endif
+                           
                         </tr>
                     @endforeach
                 @empty

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OrderExport;
 
 class AdminController extends Controller
 {
@@ -27,16 +29,21 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function rapport()
+    public function rapport(string $type)
     {
-        $orders = Order::with('user','order_items.product_variant.product')->get();
+        if($type === 'pdf'){
+            $orders = Order::with('user','order_items.product_variant.product')->get();
 
-        $path = public_path('rapports');
-        if (!File::exists($path)) {
-            File::makeDirectory($path, 0755, true);
+            $path = public_path('rapports');
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0755, true);
+            }
+            return Pdf::view('rapport',['orders' => $orders])->save($path . '/rapport.pdf');
+        }elseif ($type === 'excel') {
+
+            return Excel::download(new OrderExport , 'rapport.xlsx');
         }
-
-        return Pdf::view('rapport',['orders' => $orders])->save($path . '/rapport.pdf');
+        
     }
 
     /**
